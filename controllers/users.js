@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/users");
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
 const getUsers = (req, res) => {

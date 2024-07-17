@@ -1,5 +1,5 @@
 const validator = require("validator");
-const ClothingItem = require("../models/clothingItem");
+const ClothingItem = require("../models/clothingItems");
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
 const createItem = (req, res) => {
