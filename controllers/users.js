@@ -35,8 +35,9 @@ const getUser = (req, res) => {
   User.findById(userId)
     .orFail(new Error(ERROR_MESSAGES.NOT_FOUND))
     .then((user) => {
-      return res.status(200).send(user);
-    })
+       res.status(200).send(user);
+       return;
+})
     .catch((err) => {
       console.error(err);
       if (err.message === ERROR_MESSAGES.NOT_FOUND) {
