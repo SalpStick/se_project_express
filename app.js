@@ -19,7 +19,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use("/", indexRouter);
-console.log(PORT);
 
 
 app.listen(PORT, () => {});
