@@ -3,7 +3,7 @@ const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.status(200).send(users))
+    .then((users) => res.send(users))
     .catch((err) => {
       console.error(err);
       return res
@@ -36,7 +36,7 @@ const getUser = (req, res) => {
     .orFail(new Error(ERROR_MESSAGES.NOT_FOUND))
     .then((user) => {
        res.status(200).send(user);
-       return;
+       return null;
 })
     .catch((err) => {
       console.error(err);
