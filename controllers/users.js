@@ -1,8 +1,8 @@
-const User = require("../models/users");
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
+const User = require("../models/users");
 
 
 const getUsers = (req, res) => {
@@ -88,7 +88,7 @@ const login = (req, res) => {
 
   if (!email || !password) {
     return res
-      .status(BAD_REQUEST)
+      .status(ERROR_CODES.BAD_REQUEST)
       .send({ message: "The email and password fields are required" });
   }
 
@@ -103,11 +103,11 @@ const login = (req, res) => {
     .catch((err) => {
       if (err.message === "Incorrect email or password") {
         return res
-          .status(UNAUTHORIZED)
+          .status(ERROR_CODES.UNAUTHORIZED)
           .send({ message: "Incorrect email or password" });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR)
+        .status(ERROR_CODES.INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
 };
