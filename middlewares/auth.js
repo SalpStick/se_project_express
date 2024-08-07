@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
 
   console.log(payload, "authorization from auth middleware");
   req.user = payload;
-  next();
+  return next();
 };
 
 module.exports = { auth };
