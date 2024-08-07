@@ -1,5 +1,9 @@
 const User = require("../models/users");
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
+
 
 const getUsers = (req, res) => {
   User.find({})
@@ -13,10 +17,33 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
+  const { name, avatar, email, password } = req.body;
 
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send(user))
+  
+  if (!email) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "An email address is required." });
+  }
+
+  return User.findOne({ email })
+    .then((existingEmail) => {
+      if (existingEmail) {
+        const error = new Error("Email already exists");
+        error.code = 11000;
+        throw error;
+      }
+      return bcrypt.hash(password, 10);
+    })
+  .then((hash) =>
+    User.create({ name, avatar, email, password: hash }).then((user) => {
+      res.status(201).send({
+        name: user.name,
+        avatar: user.avatar,
+        email: user.email,
+      });
+    })
+  )
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -56,4 +83,34 @@ const getUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getUser };
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "The email and password fields are required" });
+  }
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      res.send({
+        token: jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: "7d",
+        }),
+      });
+    })
+    .catch((err) => {
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
+
+module.exports = { getUsers, createUser, getUser, login };
