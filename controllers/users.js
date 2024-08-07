@@ -29,11 +29,13 @@ const createUser = (req, res) => {
   return User.findOne({ email })
     .then((existingEmail) => {
       if (existingEmail) {
-        const error = new Error("Email already exists");
-        error.code = 11000;
-        throw error;
+        return res
+          .status(409)
+          .send({ message: "Email already exists" });
       }
-      return bcrypt.hash(password, 10);
+      else {
+      next( bcrypt.hash(password, 10) );
+      }
     })
   .then((hash) =>
     User.create({ name, avatar, email, password: hash }).then((user) => {
