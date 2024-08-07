@@ -6,7 +6,7 @@ const handleAuthError = (res) => {
   res.status(UNAUTHORIZED).send({ message: "Authorization required" });
 };
 
-const authMiddleware = (req, res, next) => {
+const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
@@ -23,4 +23,4 @@ const authMiddleware = (req, res, next) => {
   req.user = payload;
   return next();
 };
-module.exports = authMiddleware;
+module.exports = auth;
