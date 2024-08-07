@@ -4,6 +4,9 @@ const clothingItemRouter = require("./clothingItems");
 
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
+router.post("/signin", login);
+router.post("/signup", createUser);
+
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
 
