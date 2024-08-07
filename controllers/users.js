@@ -34,7 +34,7 @@ const createUser = (req, res) => {
           .send({ message: "Email already exists" });
       }
       else {
-      next( bcrypt.hash(password, 10) );
+      return bcrypt.hash(password, 10);
       }
     })
   .then((hash) =>
