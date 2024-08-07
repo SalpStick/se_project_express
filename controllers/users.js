@@ -1,8 +1,8 @@
-const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/users");
+const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
 
 const getUsers = (req, res) => {
@@ -22,7 +22,7 @@ const createUser = (req, res) => {
   
   if (!email) {
     return res
-      .status(BAD_REQUEST)
+      .status(ERROR_CODES.BAD_REQUEST)
       .send({ message: "An email address is required." });
   }
 
