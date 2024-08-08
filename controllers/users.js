@@ -92,7 +92,7 @@ const login = (req, res) => {
       .send({ message: "The email and password fields are required" });
   }
 
-  User.findUserByCredentials(email, password)
+ return User.findUserByCredentials(email, password)
     .then((user) => {
       return res.send({
         token: jwt.sign({ _id: user._id }, JWT_SECRET, {
@@ -137,7 +137,6 @@ const updateUser = (req, res) => {
         .status(ERROR_CODES.SERVER_ERROR)
         .send({ message: `${ERROR_MESSAGES.SERVER_ERROR} from updateUser` });
     });
-    return;
 };
 
 
