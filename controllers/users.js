@@ -86,29 +86,39 @@ const getUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res
-      .status(ERROR_CODES.BAD_REQUEST)
-      .send({ message: "The email and password fields are required" });
-  }
-
- return User.findUserByCredentials(email, password)
+  User.findUserByCredentials(email, password)
     .then((user) => {
-      return res.send({
-        token: jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: "7d",
-        }),
+      console.log("user object from the login controller", user);
+      if (!user) {
+        return res.status(401).send({ message: "Invalid email or password" });
+      }
+
+      if (!user._id || !JWT_SECRET) {
+        console.error("user._id or JWT_SECRET is undefined");
+        return res
+          .status(500)
+          .send({ message: "Internal server error from the try statement" });
+      }
+
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
       });
+
+      res.status(200).send({ token });
     })
     .catch((err) => {
-      if (err.message === "Incorrect email or password") {
-        return res
-          .status(ERROR_CODES.UNAUTHORIZED)
-          .send({ message: "Incorrect email or password" });
+      console.error("Login error:", err.name);
+      if (err.name === "Error") {
+        return res.status(400).send({
+          message:
+            " Authorization with non-existent email and password in the database",
+        });
       }
-      return res
-        .status(ERROR_CODES.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+
+      res.status(500).send({
+        message:
+          "Internal server error from the catch in the login controller" + err,
+      });
     });
 };
 
