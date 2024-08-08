@@ -6,7 +6,7 @@ const { auth } = require("../middlewares/auth");
 
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
-router.post("/signin", auth, login);
+router.post("/signin", login);
 router.post("/signup", createUser);
 
 router.use("/users", auth, userRouter);
