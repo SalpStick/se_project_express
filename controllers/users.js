@@ -125,17 +125,17 @@ const updateUser = (req, res) => {
       if (err.name === "ValidationError") {
         console.error(err);
         return res
-          .status(BAD_REQUEST)
-          .send({ message: `${messageBadRequest} updateUser` });
+          .status(ERROR_CODES.BAD_REQUEST)
+          .send({ message: `${ERROR_MESSAGES.VALIDATION_ERROR} updateUser` });
       }
       if (err.name === "DocumentNotFoundError") {
         return res
-          .status(NOT_FOUND)
-          .send({ message: `${messageNotFoundError} from updateUser` });
+          .status(ERROR_CODES.NOT_FOUND)
+          .send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: `${messageInternalServerError} from updateUser` });
+        .status(ERROR_CODES.SERVER_ERROR)
+        .send({ message: `${ERROR_MESSAGES.SERVER_ERROR} from updateUser` });
     });
 };
 
