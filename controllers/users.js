@@ -85,14 +85,14 @@ const getUser = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  
+
   if (!email || !password) {
     return res
       .status(ERROR_CODES.BAD_REQUEST)
       .send({ message: "The email and password fields are required" });
   }
 
- User.findUserByCredentials(email, password)
+ return User.findUserByCredentials(email, password)
     .then((user) => {
       return res.send({
         token: jwt.sign({ _id: user._id }, JWT_SECRET, {
