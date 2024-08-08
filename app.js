@@ -11,12 +11,12 @@ mongoose
   .then(() => {})
   .catch(console.error);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "6699540bd7fe997347a9a6e6",
-  };
-  next();
-});
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: "6699540bd7fe997347a9a6e6",
+//   };
+//   next();
+// });  Test User
 
 app.use(express.json());
 app.use(cors());
