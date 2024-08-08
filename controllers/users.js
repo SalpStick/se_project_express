@@ -84,34 +84,34 @@ const getUser = (req, res) => {
 };
 
 const login = (req, res) => {
-  return
-//   const { email, password } = req.body;
+  const { email, password } = req.body;
 
-//   if (!email || !password) {
-//     return res
-//       .status(ERROR_CODES.BAD_REQUEST)
-//       .send({ message: "The email and password fields are required" });
-//   }
+  if (!email || !password) {
+    return res
+      .status(ERROR_CODES.BAD_REQUEST)
+      .send({ message: "The email and password fields are required" });
+  }
 
-//  return User.findUserByCredentials(email, password)
-//     .then((user) => {
-//       return res.send({
-//         token: jwt.sign({ _id: user._id }, JWT_SECRET, {
-//           expiresIn: "7d",
-//         }),
-//       });
-//     })
-//     .catch((err) => {
-//       if (err.message === "Incorrect email or password") {
-//         return res
-//           .status(ERROR_CODES.UNAUTHORIZED)
-//           .send({ message: "Incorrect email or password" });
-//       }
-//       return res
-//         .status(ERROR_CODES.INTERNAL_SERVER_ERROR)
-//         .send({ message: "An error has occurred on the server" });
-//     });
+ return User.findUserByCredentials(email, password)
+    .then((user) => {
+      return res.send({
+        token: jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: "7d",
+        }),
+      });
+    })
+    .catch((err) => {
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(ERROR_CODES.UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
+      }
+      return res
+        .status(ERROR_CODES.INTERNAL_SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
+    });
 };
+
 const updateUser = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
