@@ -120,7 +120,7 @@ const updateUser = (req, res) => {
       runValidators: true, 
     }
   )
-    .then((user) => res.send({ data: user }))
+    .then((user) => { return res.send({ data: user })})
     .catch((err) => {
       if (err.name === "ValidationError") {
         console.error(err);
