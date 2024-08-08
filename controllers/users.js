@@ -111,6 +111,34 @@ const login = (req, res) => {
         .send({ message: "An error has occurred on the server" });
     });
 };
+const updateUser = (req, res) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name: req.body.name, avatar: req.body.avatar },
+    {
+      new: true, 
+      runValidators: true, 
+    }
+  )
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        console.error(err);
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: `${messageBadRequest} updateUser` });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NOT_FOUND)
+          .send({ message: `${messageNotFoundError} from updateUser` });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: `${messageInternalServerError} from updateUser` });
+    });
+};
 
 
-module.exports = { getUsers, createUser, getUser, login };
+
+module.exports = { getUsers, createUser, getUser, login, updateUser };
