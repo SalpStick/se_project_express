@@ -86,11 +86,11 @@ const getUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res
-      .status(ERROR_CODES.BAD_REQUEST)
-      .send({ message: "The email and password fields are required" });
-  }
+  // if (!email || !password) {
+  //   return res
+  //     .status(ERROR_CODES.BAD_REQUEST)
+  //     .send({ message: "The email and password fields are required" });
+  // }
 
  return User.findUserByCredentials(email, password)
     .then((user) => {
