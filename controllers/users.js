@@ -4,18 +4,6 @@ const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/users");
 const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
 
-
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(ERROR_CODES.SERVER_ERROR)
-        .send({ message: ERROR_MESSAGES.SERVER_ERROR });
-    });
-};
-
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
@@ -30,11 +18,10 @@ const createUser = (req, res) => {
     .then((existingEmail) => {
       if (existingEmail) {
         return res
-          .status(409)
+          .status(ERROR_CODES.EXISTING_EMAIL)
           .send({ message: "Email already exists" });
       }
-      return bcrypt.hash(password, 10);
-    })
+      return bcrypt.hash(password, 10)
   .then((hash) =>
     User.create({ name, avatar, email, password: hash }).then((user) => {
       res.status(201).send({
@@ -44,6 +31,7 @@ const createUser = (req, res) => {
       });
     })
   )
+})
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -58,8 +46,7 @@ const createUser = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
+  User.findById(req.user._id)
     .orFail(new Error(ERROR_MESSAGES.NOT_FOUND))
     .then((user) => {
        res.status(200).send(user);
@@ -88,18 +75,6 @@ const login = (req, res) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log("user object from the login controller", user);
-      if (!user) {
-        return res.status(401).send({ message: "Invalid email or password" });
-      }
-
-      if (!user._id || !JWT_SECRET) {
-        console.error("user._id or JWT_SECRET is undefined");
-        return res
-          .status(500)
-          .send({ message: "Internal server error from the try statement" });
-      }
-
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
@@ -108,16 +83,16 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error("Login error:", err.name);
-      if (err.name === "Error") {
-        return res.status(400).send({
+      if (err.name === "Incorrect email or password") {
+        return res.status(ERROR_CODES.BAD_REQUEST).send({
           message:
             " Authorization with non-existent email and password in the database",
         });
       }
 
-      res.status(500).send({
+      return res.status(ERROR_CODES.SERVER_ERROR).send({
         message:
-          "Internal server error from the catch in the login controller" + err,
+          "Internal server error from the catch in the login controller",
       });
     });
 };
@@ -131,6 +106,7 @@ const updateUser = (req, res) => {
       runValidators: true, 
     }
   )
+  .orFail(() => res.status(ERROR_CODES.NOT_FOUND).send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` }))
     .then((user) =>  res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -139,11 +115,11 @@ const updateUser = (req, res) => {
           .status(ERROR_CODES.BAD_REQUEST)
           .send({ message: `${ERROR_MESSAGES.VALIDATION_ERROR} updateUser` });
       }
-      if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(ERROR_CODES.NOT_FOUND)
-          .send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` });
-      }
+      // if (err.name === "DocumentNotFoundError") {
+      //   return res
+      //     .status(ERROR_CODES.NOT_FOUND)
+      //     .send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` });
+      // }
       return res
         .status(ERROR_CODES.SERVER_ERROR)
         .send({ message: `${ERROR_MESSAGES.SERVER_ERROR} from updateUser` });
@@ -152,4 +128,4 @@ const updateUser = (req, res) => {
 
 
 
-module.exports = { getUsers, createUser, getUser, login, updateUser };
+module.exports = { createUser, getUser, login, updateUser };
