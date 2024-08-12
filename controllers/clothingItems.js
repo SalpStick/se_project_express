@@ -71,7 +71,7 @@ const deleteItem = (req, res) => {
     .then((item) => {
       if (String(item.owner) !== req.user._id)
       {
-        return res.status(ERROR_CODES.BAD_AUTHORIZATION).send({ message: "You are not authorized to delete this item"});
+        return res.status(ERROR_CODES.FORBIDDEN).send({ message: "You are not authorized to delete this item"});
       }
       return item.deleteOne().then(() => res.status(200).send({ message: "Item successfully deleted" }));
     })

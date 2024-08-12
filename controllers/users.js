@@ -83,7 +83,7 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error("Login error:", err.name);
-      if (err.name === "Incorrect email or password") {
+      if (err.message === "Incorrect email or password") {
         return res.status(ERROR_CODES.BAD_REQUEST).send({
           message:
             " Authorization with non-existent email and password in the database",
@@ -106,7 +106,7 @@ const updateUser = (req, res) => {
       runValidators: true, 
     }
   )
-  .orFail(() => res.status(ERROR_CODES.NOT_FOUND).send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` }))
+  .orFail()
     .then((user) =>  res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {

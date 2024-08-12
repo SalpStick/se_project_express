@@ -9,7 +9,7 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItems");
 
-router.get("/", auth,  getItems);
+router.get("/", getItems);
 
 router.get("/:itemId", auth,  getItem);
 
