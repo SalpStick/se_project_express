@@ -84,7 +84,7 @@ const login = (req, res) => {
     .catch((err) => {
       console.error("Login error:", err.name);
       if (err.message === "Incorrect email or password") {
-        return res.status(ERROR_CODES.BAD_REQUEST).send({
+        return res.status(ERROR_CODES.BAD_AUTHORIZATION).send({
           message:
             " Authorization with non-existent email and password in the database",
         });
