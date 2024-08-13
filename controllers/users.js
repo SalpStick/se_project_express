@@ -115,11 +115,11 @@ const updateUser = (req, res) => {
           .status(ERROR_CODES.BAD_REQUEST)
           .send({ message: `${ERROR_MESSAGES.VALIDATION_ERROR} updateUser` });
       }
-      // if (err.name === "DocumentNotFoundError") {
-      //   return res
-      //     .status(ERROR_CODES.NOT_FOUND)
-      //     .send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` });
-      // }
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(ERROR_CODES.NOT_FOUND)
+          .send({ message: `${ERROR_MESSAGES.NOT_FOUND} from updateUser` });
+      }
       return res
         .status(ERROR_CODES.SERVER_ERROR)
         .send({ message: `${ERROR_MESSAGES.SERVER_ERROR} from updateUser` });
