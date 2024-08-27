@@ -13,7 +13,7 @@ router.get("/", getItems);
 
 router.get("/:itemId", auth,  getItem);
 
-router.post("/", auth,  createItem);
+router.post("/",  auth, createItem);
 
 router.delete("/:itemId", auth,  deleteItem);
 
