@@ -14,6 +14,7 @@
     "dependencies": {
         "bcrypt": "^5.1.1",
         "bcryptjs": "^2.4.3",
+        "celebrate": "^15.0.3",
         "cors": "^2.8.5",
         "eslintrc": "^1.0.6",
         "express": "^4.19.2",
