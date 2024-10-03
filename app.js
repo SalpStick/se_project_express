@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const indexRouter = require("./routes/index");
+const { errors } = require('celebrate');
+const errorHandler = require('./middlewares/error-handler');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -11,15 +14,11 @@ mongoose
   .then(() => {})
   .catch(console.error);
 
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: "6699540bd7fe997347a9a6e6",
-//   };
-//   next();
-// });  Test User
-
 app.use(express.json());
 app.use(cors());
+app.use(errorLogger);
+app.use(errors());
+app.use(errorHandler);
 
 app.use("/", indexRouter);
 
