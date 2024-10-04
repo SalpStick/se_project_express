@@ -23,3 +23,11 @@ The main functionalities of the project include:
 2. Middleware: Utilized for logging, authentication, and error handling, ensuring a modular and maintainable codebase.
 3. Validation and Sanitization: Input validation are performed to ensure data integrity and security.
 4. Error Handling: Comprehensive error handling to manage different types of errors, including 404 for unknown routes and validation errors.
+
+# Frontend Domain
+
+**[wtwr1.ignorelist.com](http://wtwr1.ignorelist.com)**
+
+# Backend Domain
+
+**[api.wtwr1.ignorelist.com](http://api.wtwr1.ignorelist.com)**
