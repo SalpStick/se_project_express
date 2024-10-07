@@ -16,11 +16,13 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-app.use(errorLogger);
 app.use(errors());
-app.use(errorHandler);
+app.use(requestLogger);
 
 app.use("/", indexRouter);
+
+app.use(errorLogger);
+app.use(errorHandler);
 
 
 app.listen(PORT, () => {});
