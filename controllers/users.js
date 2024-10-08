@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/users");
-const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
+const { ERROR_MESSAGES } = require("../utils/errors");
 const BadRequestError = require('../errors/BadRequestError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -75,8 +75,8 @@ const login = (req, res) => {
     .catch((err) => {
       console.error("Login error:", err.name);
       if (err.message === "Incorrect email or password") {
-        return next(new BadRequestError(
-            " Authorization with non-existent email and password in the database",
+        return next(new UnauthorizedError(
+            "Authorization with non-existent email and password in the database",
         ));
       }
 

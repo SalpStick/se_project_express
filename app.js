@@ -1,3 +1,4 @@
+const dotenv = requrie("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,12 +17,12 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-app.use(errors());
 app.use(requestLogger);
 
 app.use("/", indexRouter);
 
 app.use(errorLogger);
+app.use(errors());
 app.use(errorHandler);
 
 

@@ -3,11 +3,11 @@ const ClothingItem = require("../models/clothingItems");
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
-const { ERROR_CODES, ERROR_MESSAGES } = require("../utils/errors");
+const { ERROR_MESSAGES } = require("../utils/errors");
 
 
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
@@ -30,7 +30,7 @@ const createItem = (req, res) => {
     });
 };
 
-const getItem = (req, res) => {
+const getItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findById(itemId)
@@ -47,7 +47,7 @@ const getItem = (req, res) => {
     });
 };
 
-const getItems = (req, res) => {
+const getItems = (res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((err) =>{
@@ -56,7 +56,7 @@ const getItems = (req, res) => {
     });
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
   ClothingItem.findById(itemId)
     .orFail(() => new NotFoundError(ERROR_MESSAGES.NOT_FOUND))
@@ -78,7 +78,7 @@ const deleteItem = (req, res) => {
     });
 };
 
-const likeItem = (req, res) => {
+const likeItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndUpdate(
@@ -99,7 +99,7 @@ const likeItem = (req, res) => {
     });
 };
 
-const dislikeItem = (req, res) => {
+const dislikeItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItem.findByIdAndUpdate(

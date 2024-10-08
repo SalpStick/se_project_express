@@ -26,8 +26,8 @@ The main functionalities of the project include:
 
 # Frontend Domain
 
-**[wtwr1.ignorelist.com](http://wtwr1.ignorelist.com)**
+**[wtwr1.ignorelist.com](https://wtwr1.ignorelist.com)**
 
 # Backend Domain
 
-**[api.wtwr1.ignorelist.com](http://api.wtwr1.ignorelist.com)**
+**[api.wtwr1.ignorelist.com](https://api.wtwr1.ignorelist.com)**
