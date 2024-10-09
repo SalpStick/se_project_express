@@ -50,10 +50,7 @@ const getItem = (req, res, next) => {
 const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) =>{
-      console.log(err);
-     return next;
-    });
+    .catch((err) => next(err));
 };
 
 const deleteItem = (req, res, next) => {

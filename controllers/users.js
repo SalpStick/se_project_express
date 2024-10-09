@@ -14,7 +14,7 @@ const createUser = (req, res, next) => {
 
   
   if (!email) {
-    returnnext(new BadRequestError("An email address is required."));
+    return next(new BadRequestError("An email address is required."));
   }
 
   return User.findOne({ email })
