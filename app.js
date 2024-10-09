@@ -16,7 +16,11 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://wtwr1.ignorelist.com', 'https://www.wtwr1.ignorelist.com'],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 app.use(requestLogger);
 
 app.use("/", indexRouter);
