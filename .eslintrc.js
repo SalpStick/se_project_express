@@ -20,8 +20,9 @@ module.exports = {
       sourceType: "module",
     },
     rules: {
-      "no-console": ["warn", { allow: ["info", "error"] }], // "warn" | "off",
+      "no-console": ["warn", { allow: ["error"] }], // "warn" | "off",
       "no-underscore-dangle": ["off"],
+      "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
     },
   };
   

@@ -4,9 +4,9 @@ const errorHandler = (err, req, res, next) => {
 
   const status = err.statusCode || ERROR_CODES.SERVER_ERROR;
   const message = err.message || ERROR_MESSAGES.SERVER_ERROR;
-  
-  console.error(status + ' ' + message);
-  next(err);
+
+  res.status(status).send({message});
+  next();
 };
 
 module.exports = errorHandler;
